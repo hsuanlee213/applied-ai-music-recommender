@@ -152,6 +152,8 @@ Use this section to document the experiments you ran. For example:
 - What happened when you added tempo or valence to the score
 - How did your system behave for different types of users
 
+I tested the recommender with several user profiles, including High-Energy Pop, Chill Lofi, Deep Intense Rock, and Acoustic Metal. I also ran a small experiment where I temporarily removed the mood check from the scoring logic. After that change, the system still worked, but the recommendations became more dependent on genre and energy similarity. The results changed most for profiles like Chill Lofi, which showed that mood is important for capturing musical vibe.
+
 ---
 
 ## Limitations and Risks
@@ -165,6 +167,8 @@ Examples:
 - It might over favor one genre or mood
 
 You will go deeper on this in your model card.
+
+This recommender only works on a small song catalog, so the same songs can appear repeatedly across different users. It relies on simple features like genre, mood, and energy, and does not understand lyrics, language, or deeper musical meaning. It may also over-favor genres that have more examples in the dataset, while users with rare or underrepresented tastes get less variety. Because it uses exact labels, similar moods or genres may be treated as totally different.
 
 ---
 
