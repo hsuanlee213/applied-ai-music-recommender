@@ -4,7 +4,7 @@
 
 **Applied AI Music Recommender** is an AI-enhanced music recommendation system that helps users find songs based on their preferences, mood, energy level, and listening context.
 
-This project extends my original rule-based music recommender into a **Retrieval-Augmented Generation (RAG)** system. Instead of asking an AI model to recommend songs from memory, the system first retrieves relevant songs from a local music catalog and then uses an AI model to generate personalized recommendations and natural-language explanations based on those retrieved songs.
+This project extends my original rule-based music recommender into a **Retrieval-Augmented Generation (RAG)** system. Instead of asking an AI model to recommend songs from memory, the system first retrieves relevant songs from a local music catalog and then uses a deterministic AI-style generation component to produce personalized recommendations and natural-language explanations based on those retrieved songs.
 
 This project matters because real-world recommendation systems need to balance structured data, user preferences, explainability, and reliability. By combining deterministic retrieval with AI-generated explanations, this project shows how a simple recommender can evolve into a more flexible and user-centered applied AI system.
 
@@ -68,7 +68,7 @@ graph TD
 
 ## New AI Feature: RAG-Based Recommendation
 
-For the final project, I am evolving the original rule-based system into a **RAG-based AI music recommender**.
+For the final project, I evolved the original rule-based system into a **RAG-based AI music recommender**.
 
 RAG stands for **Retrieval-Augmented Generation**. In this project, that means the system does not ask the AI model to recommend songs without context. Instead, it first retrieves relevant songs from the local music catalog, then provides those retrieved songs as context to the AI model. The AI model then generates personalized explanations based on the retrieved candidates.
 
@@ -78,9 +78,10 @@ The new workflow is:
 2. The system validates the input using guardrails.
 3. The retriever searches the local song catalog and ranks candidate songs.
 4. The RAG context builder formats the retrieved songs into a structured prompt.
-5. The LLM generates personalized recommendations and explanations.
+5. The AI-style recommendation generator creates personalized recommendations and explanations.
 6. The app displays the final recommendations to the user.
 7. Logging and testing components track system behavior and check reliability.
+8. The command-line app continues accepting new requests until the user types `q`, `quit`, or `exit`.
 
 This makes the system more flexible than the original version because it can explain recommendations in a more natural and personalized way while still staying grounded in the available song dataset.
 
@@ -100,6 +101,8 @@ The system is organized into several main components:
 - **Logging System:** Records user input, retrieval results, AI responses, and errors.
 - **Testing / Evaluation Component:** Checks that retrieval, generation, and guardrails work correctly.
 - **Human Review / User Feedback:** Allows users or reviewers to evaluate whether the recommendations make sense.
+
+In the current implementation, the AI recommendation generator is a deterministic AI-style generator. It does not require an external API key, which makes the project easier to run, test, and demo reproducibly. The system is designed so that this component can later be replaced with a real LLM API client if needed.
 
 ### System Diagram
 
@@ -192,7 +195,7 @@ This design has several trade-offs:
 
 ## Sample Interactions
 
-> Note: These examples show the intended final behavior of the RAG-based system. The final output may vary depending on the model, dataset, and implementation.
+> Note: These examples show the implemented command-line behavior of the current RAG-based version. The current generator is a deterministic AI-style response generator, so the output is reproducible and does not require an external API key.
 
 ### Example 1: Calm Study Music
 
@@ -315,9 +318,9 @@ This edge-case profile combined intense rock preferences with a strong acoustic 
 
 ## Testing Summary
 
-The project includes automated tests for the original recommender logic using `pytest`.
+The project includes automated tests using `pytest`.
 
-Current tests check that:
+The original recommender tests check that:
 
 - Songs can be loaded from the dataset.
 - The recommender returns ranked results.
@@ -325,26 +328,29 @@ Current tests check that:
 - Explanation reasons are generated.
 - The system can handle different user profiles.
 
-For the final RAG-based version, I plan to add or expand tests for:
+The RAG-based tests check that:
 
-- Input validation and guardrails.
-- Retriever behavior.
-- RAG context formatting.
-- AI output fallback behavior.
-- Whether AI recommendations stay grounded in retrieved songs.
-- Whether invalid or unrelated input is handled safely.
+- Empty input is rejected by guardrails.
+- Non-music-related input is rejected by guardrails.
+- Music-related input is accepted.
+- The RAG context includes the user query.
+- The RAG context includes retrieved song information.
+- The AI-style generator uses retrieved songs in its response.
+- The AI-style generator handles empty recommendation results safely.
 
 ### What worked
 
-The original scoring system worked well for simple profiles where genre, mood, and energy were clearly aligned. It also produced understandable explanations because the scoring logic was transparent.
+The original scoring system worked well for simple profiles where genre, mood, and energy were clearly aligned. The RAG-based pipeline also worked well as a structured upgrade because the original recommender could serve as the retrieval component.
+
+The new guardrails, context builder, generator, and tests made the system easier to demo and easier to inspect.
 
 ### What did not work as well
 
-The system was limited by the small song catalog and exact label matching. If a user wanted a mood or genre that was not represented in the dataset, the recommender could only return the closest available match. The original version also could not explain recommendations in a very natural or personalized way.
+The system is still limited by the small song catalog and simple keyword parsing. If the user enters a vague word like "fast," the system needs keyword support to interpret it correctly. The AI-style response generator is also deterministic, so it improves explanation structure but does not yet provide the flexibility of a real LLM API.
 
 ### What I learned from testing
 
-Testing showed that even a simple recommender can behave differently across user profiles. It also showed that recommendation quality depends heavily on the dataset, feature design, and scoring weights. The RAG-based upgrade is meant to address some of these issues by keeping retrieval grounded while improving the quality of explanations.
+Testing showed that an AI application needs more than a working model. Input validation, retrieval quality, context formatting, fallback behavior, and reproducible tests all matter. The tests helped confirm that the RAG pipeline is grounded in retrieved song data instead of generating unsupported recommendations.
 
 ---
 
@@ -384,7 +390,7 @@ cd applied-ai-music-recommender
 2. Create a virtual environment:
 
 ```bash
-python -m venv .venv
+python3 -m venv .venv
 ```
 
 3. Activate the virtual environment:
@@ -407,18 +413,14 @@ Windows:
 pip install -r requirements.txt
 ```
 
-5. If using an AI API, create a `.env` file:
+5. No external AI API key is required for the current version.
 
-```text
-OPENAI_API_KEY=your_api_key_here
-```
-
-If the final version uses a local or mock AI response instead of an API key, this step may not be required.
+The current implementation uses a deterministic AI-style generator for reproducible demo and testing. If a future version connects to a real LLM API, API key setup can be added through a `.env` file.
 
 6. Run the app:
 
 ```bash
-python -m src.main
+python3 -m src.main
 ```
 
 ---
@@ -428,7 +430,7 @@ python -m src.main
 Run all tests with:
 
 ```bash
-pytest
+python3 -m pytest
 ```
 
 You can add more tests in:
@@ -450,6 +452,7 @@ tests/test_ai_generator.py
 
 ## Project Structure
 
+
 ```text
 applied-ai-music-recommender/
   assets/
@@ -466,20 +469,24 @@ applied-ai-music-recommender/
     acoustic-metal.png
 
   src/
+    __init__.py
     main.py
     recommender.py
+    guardrails.py
     rag.py
     llm_client.py
-    guardrails.py
     logger_config.py
 
   tests/
     test_recommender.py
+    test_guardrails.py
+    test_rag.py
+    test_llm_client.py
 
   README.md
   requirements.txt
   model_card.md
-  .env.example
+  pytest.ini
   .gitignore
 ```
 
@@ -493,110 +500,4 @@ This project taught me that recommendation systems are not only about ranking it
 
 The RAG-based version helped me think about applied AI as a system design problem rather than just a model problem. The AI model is only one part of the pipeline. Retrieval, guardrails, logging, testing, and human review all matter because they make the system more reliable and easier to trust. This project showed me that building useful AI requires both technical implementation and careful thinking about limitations, failure cases, and user needs.
 
----
-
-## Model Card
-
-For a deeper reflection on system behavior, limitations, and risks, see:
-
-[**Model Card**](model_card.md)
-# 🎧 Model Card - Music Recommender Simulation
-
-## 1. Model Name
-
-Give your recommender a name, for example:
-
-> VibeFinder 1.0
-
----
-
-## 2. Intended Use
-
-- What is this system trying to do
-- Who is it for
-
-Example:
-
-> This model suggests 3 to 5 songs from a small catalog based on a user's preferred genre, mood, and energy level. It is for classroom exploration only, not for real users.
-
----
-
-## 3. How It Works (Short Explanation)
-
-Describe your scoring logic in plain language.
-
-- What features of each song does it consider
-- What information about the user does it use
-- How does it turn those into a number
-
-Try to avoid code in this section, treat it like an explanation to a non programmer.
-
----
-
-## 4. Data
-
-Describe your dataset.
-
-- How many songs are in `data/songs.csv`
-- Did you add or remove any songs
-- What kinds of genres or moods are represented
-- Whose taste does this data mostly reflect
-
----
-
-## 5. Strengths
-
-Where does your recommender work well
-
-You can think about:
-- Situations where the top results "felt right"
-- Particular user profiles it served well
-- Simplicity or transparency benefits
-
----
-
-## 6. Limitations and Bias
-
-Where does your recommender struggle
-
-Some prompts:
-- Does it ignore some genres or moods
-- Does it treat all users as if they have the same taste shape
-- Is it biased toward high energy or one genre by default
-- How could this be unfair if used in a real product
-
----
-
-## 7. Evaluation
-
-How did you check your system
-
-Examples:
-- You tried multiple user profiles and wrote down whether the results matched your expectations
-- You compared your simulation to what a real app like Spotify or YouTube tends to recommend
-- You wrote tests for your scoring logic
-
-You do not need a numeric metric, but if you used one, explain what it measures.
-
----
-
-## 8. Future Work
-
-If you had more time, how would you improve this recommender
-
-Examples:
-
-- Add support for multiple users and "group vibe" recommendations
-- Balance diversity of songs instead of always picking the closest match
-- Use more features, like tempo ranges or lyric themes
-
----
-
-## 9. Personal Reflection
-
-A few sentences about what you learned:
-
-- What surprised you about how your system behaved
-- How did building this change how you think about real music recommenders
-- Where do you think human judgment still matters, even if the model seems "smart"
 
