@@ -52,3 +52,35 @@
 2026-04-26 23:23:18,314 - INFO - Built RAG context
 2026-04-26 23:23:18,315 - INFO - Generated AI recommendation response
 2026-04-26 23:23:19,919 - INFO - User exited the application.
+2026-04-26 23:26:57,637 - INFO - User query received: I want calm music for studying
+2026-04-26 23:26:57,638 - INFO - Parsed user preferences: {'genre': 'pop', 'mood': 'chill', 'energy': 0.3, 'likes_acoustic': False}
+2026-04-26 23:26:57,638 - INFO - Retrieved 5 songs
+2026-04-26 23:26:57,639 - INFO - Built RAG context
+2026-04-26 23:26:57,639 - INFO - Generated AI recommendation response
+2026-04-26 23:27:26,813 - INFO - User query received: Recommend upbeat pop music for a workout
+2026-04-26 23:27:26,814 - INFO - Parsed user preferences: {'genre': 'pop', 'mood': 'happy', 'energy': 0.8, 'likes_acoustic': False}
+2026-04-26 23:27:26,815 - INFO - Retrieved 5 songs
+2026-04-26 23:27:26,815 - INFO - Built RAG context
+2026-04-26 23:27:26,815 - INFO - Generated AI recommendation response
+2026-04-26 23:27:54,432 - INFO - User query received: I want intense rock music but I also like acoustic songs
+2026-04-26 23:27:54,435 - INFO - Parsed user preferences: {'genre': 'rock', 'mood': 'intense', 'energy': 0.9, 'likes_acoustic': True}
+2026-04-26 23:27:54,435 - INFO - Retrieved 5 songs
+2026-04-26 23:27:54,435 - INFO - Built RAG context
+2026-04-26 23:27:54,435 - INFO - Generated AI recommendation response
+2026-04-26 23:28:09,865 - INFO - User exited the application.
+2026-04-26 23:31:18,807 - INFO - User query received: I want calm music for studying
+2026-04-26 23:31:18,809 - INFO - Parsed user preferences: {'genre': 'pop', 'mood': 'chill', 'energy': 0.3, 'likes_acoustic': False}
+2026-04-26 23:31:18,809 - INFO - Retrieved 5 songs
+2026-04-26 23:31:18,809 - INFO - Built RAG context
+2026-04-26 23:31:18,809 - INFO - Generated AI recommendation response
+2026-04-26 23:31:48,870 - INFO - User query received: Recommend upbeat pop songs for a workout
+2026-04-26 23:31:48,871 - INFO - Parsed user preferences: {'genre': 'pop', 'mood': 'happy', 'energy': 0.8, 'likes_acoustic': False}
+2026-04-26 23:31:48,872 - INFO - Retrieved 5 songs
+2026-04-26 23:31:48,872 - INFO - Built RAG context
+2026-04-26 23:31:48,872 - INFO - Generated AI recommendation response
+2026-04-26 23:32:19,272 - INFO - User query received: I want intense rock musi but I also like acoustic songs
+2026-04-26 23:32:19,274 - INFO - Parsed user preferences: {'genre': 'rock', 'mood': 'intense', 'energy': 0.9, 'likes_acoustic': True}
+2026-04-26 23:32:19,274 - INFO - Retrieved 5 songs
+2026-04-26 23:32:19,274 - INFO - Built RAG context
+2026-04-26 23:32:19,274 - INFO - Generated AI recommendation response
+2026-04-26 23:32:36,216 - INFO - User exited the application.

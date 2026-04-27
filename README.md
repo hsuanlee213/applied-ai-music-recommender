@@ -546,9 +546,7 @@ python3 -m pytest
 
 ## Video Walkthrough
 
-A Loom walkthrough of the system running end-to-end is available here:
-
-[Watch the Loom Demo](TODO: Add Loom link)
+[Demo](https://drive.google.com/file/d/1suz-YHggO80Ch3WGXo09ZR45u-5GvR6V/view?usp=sharing)
 
 ## Model Card
 
