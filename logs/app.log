@@ -1,0 +1,4 @@
+2026-04-26 22:43:57,274 - INFO - User query received: hot
+2026-04-26 22:43:57,274 - WARNING - Invalid user query: This app is designed for music recommendations. Please enter a music-related request.
+2026-04-26 22:44:20,175 - INFO - User query received: lyric
+2026-04-26 22:44:20,176 - WARNING - Invalid user query: This app is designed for music recommendations. Please enter a music-related request.
