@@ -78,39 +78,47 @@ def run_rag_demo() -> None:
     print("=" * 70)
     print("Describe what kind of music you want.")
     print("Example: I want calm acoustic music for studying.")
+    print("Type 'q', 'quit', or 'exit' to stop.")
     print("=" * 70)
 
-    user_query = input("\nYour request: ")
-    logger.info("User query received: %s", user_query)
+    while True:
+        user_query = input("\nYour request: ").strip()
 
-    is_valid, validation_message = validate_user_query(user_query)
+        if user_query.lower() in ["q", "quit", "exit"]:
+            logger.info("User exited the application.")
+            print("\nThanks for using Applied AI Music Recommender. Goodbye! 🎵")
+            break
 
-    if not is_valid:
-        logger.warning("Invalid user query: %s", validation_message)
-        print(f"\n{validation_message}")
-        return
+        logger.info("User query received: %s", user_query)
 
-    user_prefs = query_to_user_prefs(user_query)
-    logger.info("Parsed user preferences: %s", user_prefs)
+        is_valid, validation_message = validate_user_query(user_query)
 
-    recommendations = recommend_songs(user_prefs, songs, k=5)
-    logger.info("Retrieved %d songs", len(recommendations))
+        if not is_valid:
+            logger.warning("Invalid user query: %s", validation_message)
+            print(f"\n{validation_message}")
+            continue
 
-    rag_context = build_rag_context(user_query, recommendations)
-    logger.info("Built RAG context")
+        user_prefs = query_to_user_prefs(user_query)
+        logger.info("Parsed user preferences: %s", user_prefs)
 
-    ai_response = generate_ai_recommendation(
-        user_query=user_query,
-        recommendations=recommendations,
-        rag_context=rag_context
-    )
-    logger.info("Generated AI recommendation response")
+        recommendations = recommend_songs(user_prefs, songs, k=5)
+        logger.info("Retrieved %d songs", len(recommendations))
 
-    print("\n" + "=" * 70)
-    print("🤖 AI-GENERATED RECOMMENDATIONS")
-    print("=" * 70)
-    print(ai_response)
-    print("=" * 70 + "\n")
+        rag_context = build_rag_context(user_query, recommendations)
+        logger.info("Built RAG context")
+
+        ai_response = generate_ai_recommendation(
+            user_query=user_query,
+            recommendations=recommendations,
+            rag_context=rag_context
+        )
+        logger.info("Generated AI recommendation response")
+
+        print("\n" + "=" * 70)
+        print("🤖 AI-GENERATED RECOMMENDATIONS")
+        print("=" * 70)
+        print(ai_response)
+        print("=" * 70)
 
 
 if __name__ == "__main__":
