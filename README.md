@@ -500,4 +500,58 @@ This project taught me that recommendation systems are not only about ranking it
 
 The RAG-based version helped me think about applied AI as a system design problem rather than just a model problem. The AI model is only one part of the pipeline. Retrieval, guardrails, logging, testing, and human review all matter because they make the system more reliable and easier to trust. This project showed me that building useful AI requires both technical implementation and careful thinking about limitations, failure cases, and user needs.
 
+## Portfolio Artifact
 
+GitHub Repository: https://github.com/hsuanlee213/applied-ai-music-recommender
+
+This project represents my growth as an AI engineer because it shows that I can take a simple rule-based system and evolve it into a more complete applied AI pipeline. I focused not only on generating recommendations, but also on retrieval grounding, guardrails, logging, testing, and clear documentation. This reflects how I approach AI engineering: building systems that are understandable, testable, and useful for real users.
+
+## Reflection and Ethics
+
+### Limitations and Biases
+
+This system is limited by the small local song catalog and by the features available in `songs.csv`. Because the retriever relies on labels such as genre, mood, and energy, it may over-prioritize exact label matches and miss songs that would feel appropriate to a human listener. It may also repeat the same recommendations if the dataset does not contain enough variety.
+
+### Potential Misuse and Prevention
+
+This system is designed only for music recommendation. It could be misused if a user tries to enter unrelated, unsafe, or inappropriate prompts and expects the AI component to answer them. To reduce this risk, I added input guardrails that reject non-music-related requests and keep the app focused on recommendation tasks. The generator is also grounded in retrieved songs from the local dataset, which helps prevent unsupported recommendations.
+
+### Reliability Testing Surprise
+
+One thing that surprised me during testing was how important input validation became. The recommendation pipeline worked for full music-related sentences, but short inputs such as “fast” required more careful keyword handling. This showed me that reliability is not only about the recommender algorithm; it also depends on how well the system interprets real user input.
+
+### Collaboration With AI
+
+I used AI assistance to help plan the RAG architecture, organize the README, and identify missing reliability requirements. One helpful suggestion was to treat my original rule-based recommender as the retriever in a RAG pipeline, which allowed me to extend the project without rewriting it from scratch. One flawed suggestion was referring to the generation component as a full LLM before the project actually connected to an external model. I corrected this by documenting the current generator as a deterministic AI-style component and explaining that it could later be replaced with a real LLM API client.
+
+
+## Reliability and Evaluation Summary
+
+The project uses automated tests, guardrails, logging, and manual review to evaluate reliability.
+
+Current reliability checks include:
+
+- Unit tests for the original recommender logic.
+- Guardrail tests for empty, unrelated, and valid music-related input.
+- RAG context tests to verify that retrieved songs are included in the generated context.
+- Generator tests to verify that the AI-style response uses retrieved songs and handles empty results safely.
+- Runtime logging through `logs/app.log`.
+
+At the current stage, all 8 automated tests pass locally:
+
+
+```bash
+python3 -m pytest
+```
+
+## Video Walkthrough
+
+A Loom walkthrough of the system running end-to-end is available here:
+
+[Watch the Loom Demo](TODO: Add Loom link)
+
+## Model Card
+
+For a deeper reflection on system behavior, limitations, and risks, see:
+
+[**Model Card**](model_card.md)

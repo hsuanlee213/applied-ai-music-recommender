@@ -36,3 +36,19 @@
 2026-04-26 22:56:50,159 - INFO - User query received: guitar
 2026-04-26 22:56:50,160 - WARNING - Invalid user query: This app is designed for music recommendations. Please enter a music-related request.
 2026-04-26 22:56:55,149 - INFO - User exited the application.
+2026-04-26 23:22:45,167 - INFO - User query received: I want calm music for study
+2026-04-26 23:22:45,169 - INFO - Parsed user preferences: {'genre': 'pop', 'mood': 'chill', 'energy': 0.3, 'likes_acoustic': False}
+2026-04-26 23:22:45,170 - INFO - Retrieved 5 songs
+2026-04-26 23:22:45,170 - INFO - Built RAG context
+2026-04-26 23:22:45,170 - INFO - Generated AI recommendation response
+2026-04-26 23:22:59,938 - INFO - User query received: Recommend upbeat pop songs for a workout
+2026-04-26 23:22:59,939 - INFO - Parsed user preferences: {'genre': 'pop', 'mood': 'happy', 'energy': 0.8, 'likes_acoustic': False}
+2026-04-26 23:22:59,939 - INFO - Retrieved 5 songs
+2026-04-26 23:22:59,939 - INFO - Built RAG context
+2026-04-26 23:22:59,939 - INFO - Generated AI recommendation response
+2026-04-26 23:23:18,313 - INFO - User query received: I want intense rock music
+2026-04-26 23:23:18,314 - INFO - Parsed user preferences: {'genre': 'rock', 'mood': 'intense', 'energy': 0.9, 'likes_acoustic': False}
+2026-04-26 23:23:18,314 - INFO - Retrieved 5 songs
+2026-04-26 23:23:18,314 - INFO - Built RAG context
+2026-04-26 23:23:18,315 - INFO - Generated AI recommendation response
+2026-04-26 23:23:19,919 - INFO - User exited the application.
