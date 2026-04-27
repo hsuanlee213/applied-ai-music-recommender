@@ -14,8 +14,8 @@ User query
 from src.recommender import load_songs, recommend_songs
 from src.guardrails import validate_user_query
 from src.rag import build_rag_context
-from llm_client import generate_ai_recommendation
-from logger_config import setup_logger
+from src.llm_client import generate_ai_recommendation
+from src.logger_config import setup_logger
 
 
 def query_to_user_prefs(query: str) -> dict:
