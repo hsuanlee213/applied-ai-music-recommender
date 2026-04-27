@@ -4,3 +4,10 @@
 2026-04-26 22:44:20,176 - WARNING - Invalid user query: This app is designed for music recommendations. Please enter a music-related request.
 2026-04-26 22:50:47,056 - INFO - User query received: fast
 2026-04-26 22:50:47,057 - WARNING - Invalid user query: This app is designed for music recommendations. Please enter a music-related request.
+2026-04-26 22:52:48,003 - INFO - User query received: cool
+2026-04-26 22:52:48,005 - WARNING - Invalid user query: This app is designed for music recommendations. Please enter a music-related request.
+2026-04-26 22:53:07,264 - INFO - User query received: fast
+2026-04-26 22:53:07,264 - INFO - Parsed user preferences: {'genre': 'pop', 'mood': 'happy', 'energy': 0.5, 'likes_acoustic': False}
+2026-04-26 22:53:07,264 - INFO - Retrieved 5 songs
+2026-04-26 22:53:07,264 - INFO - Built RAG context
+2026-04-26 22:53:07,265 - INFO - Generated AI recommendation response

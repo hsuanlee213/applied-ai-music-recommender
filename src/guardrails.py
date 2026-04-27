@@ -9,10 +9,25 @@ def validate_user_query(query: str) -> tuple[bool, str]:
         return False, "Please enter a music preference, mood, genre, or listening activity."
 
     music_keywords = [
-        "music", "song", "songs", "playlist", "recommend", "genre",
-        "mood", "energy", "study", "workout", "chill", "focus",
-        "relax", "happy", "sad", "pop", "rock", "lofi", "jazz",
-        "ambient", "acoustic", "intense"
+        # General music terms
+        "music", "song", "songs", "playlist", "recommend", "recommendation",
+        "track", "tracks", "artist", "album", "genre",
+
+        # Listening activities
+        "study", "studying", "workout", "exercise", "run", "running",
+        "focus", "relax", "relaxing", "sleep", "party", "drive", "driving",
+
+        # Genres
+        "pop", "rock", "lofi", "lo-fi", "jazz", "ambient", "classical",
+        "acoustic", "metal", "hip hop", "rap", "electronic",
+
+        # Moods / vibes
+        "chill", "calm", "happy", "sad", "moody", "intense", "peaceful",
+        "romantic", "dark", "bright", "energetic", "upbeat",
+
+        # Energy / tempo descriptions
+        "fast", "slow", "high energy", "low energy", "energetic",
+        "soft", "loud", "quiet", "tempo", "beat", "bpm"
     ]
 
     lowered = query.lower()
