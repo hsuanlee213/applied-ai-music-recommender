@@ -1,85 +1,117 @@
 """
-Command line runner for the Music Recommender Simulation.
+Command line runner for the Applied AI Music Recommender.
 
-This file helps you quickly run and test your recommender.
+This version extends the original rule-based recommender into a simple
+RAG-based flow:
 
-You will implement the functions in recommender.py:
-- load_songs
-- score_song
-- recommend_songs
+User query
+→ guardrails
+→ retrieve songs from local catalog
+→ build RAG context
+→ generate AI-style recommendation response
 """
 
-from recommender import load_songs, recommend_songs, UserProfile
+from src.recommender import load_songs, recommend_songs
+from src.guardrails import validate_user_query
+from src.rag import build_rag_context
+from llm_client import generate_ai_recommendation
+from logger_config import setup_logger
 
 
-def profile_to_prefs(profile: UserProfile) -> dict:
-    """Convert a UserProfile object to the preferences dict format."""
+def query_to_user_prefs(query: str) -> dict:
+    """
+    Convert a natural-language user query into simple user preferences.
+
+    This is a lightweight parser for the project demo.
+    A more advanced version could use an LLM or NLP model to extract preferences.
+    """
+    lowered = query.lower()
+
+    genre = "pop"
+    mood = "happy"
+    energy = 0.5
+    likes_acoustic = False
+
+    if "lofi" in lowered:
+        genre = "lofi"
+    elif "rock" in lowered:
+        genre = "rock"
+    elif "jazz" in lowered:
+        genre = "jazz"
+    elif "ambient" in lowered:
+        genre = "ambient"
+    elif "pop" in lowered:
+        genre = "pop"
+
+    if "chill" in lowered or "relax" in lowered or "calm" in lowered:
+        mood = "chill"
+        energy = 0.3
+    elif "focus" in lowered or "study" in lowered:
+        mood = "focused"
+        energy = 0.4
+    elif "happy" in lowered or "upbeat" in lowered:
+        mood = "happy"
+        energy = 0.8
+    elif "intense" in lowered or "workout" in lowered:
+        mood = "intense"
+        energy = 0.9
+    elif "moody" in lowered:
+        mood = "moody"
+        energy = 0.7
+
+    if "acoustic" in lowered:
+        likes_acoustic = True
+
     return {
-        "genre": profile.favorite_genre,
-        "mood": profile.favorite_mood,
-        "energy": profile.target_energy,
-        "likes_acoustic": profile.likes_acoustic
+        "genre": genre,
+        "mood": mood,
+        "energy": energy,
+        "likes_acoustic": likes_acoustic
     }
 
 
-def main() -> None:
-    songs = load_songs("data/songs.csv") 
+def run_rag_demo() -> None:
+    logger = setup_logger()
+    songs = load_songs("data/songs.csv")
 
-    # Define multiple user profiles
-    profiles = {
-        "High-Energy Pop": UserProfile(
-            favorite_genre="pop",
-            favorite_mood="happy",
-            target_energy=0.85,
-            likes_acoustic=False
-        ),
-        "Chill Lofi": UserProfile(
-            favorite_genre="lofi",
-            favorite_mood="chill",
-            target_energy=0.25,
-            likes_acoustic=True
-        ),
-        "Deep Intense Rock": UserProfile(
-            favorite_genre="rock",
-            favorite_mood="intense",
-            target_energy=0.90,
-            likes_acoustic=False
-        ),
-        "Acoustic Metal": UserProfile(
-            favorite_genre="rock",
-            favorite_mood="intense",
-            target_energy=0.95,
-            likes_acoustic=True
-        )
-    }
+    print("\n🎵 Applied AI Music Recommender")
+    print("=" * 70)
+    print("Describe what kind of music you want.")
+    print("Example: I want calm acoustic music for studying.")
+    print("=" * 70)
 
-    # Test each profile
-    for profile_name, profile in profiles.items():
-        user_prefs = profile_to_prefs(profile)
-        recommendations = recommend_songs(user_prefs, songs, k=5)
+    user_query = input("\nYour request: ")
+    logger.info("User query received: %s", user_query)
 
-        # Print profile header
-        print("\n" + "=" * 70)
-        print(f"👤 {profile_name.upper()}")
-        print("=" * 70)
-        print(f"Genre: {profile.favorite_genre} | Mood: {profile.favorite_mood} | " +
-              f"Energy: {profile.target_energy:.1%} | Acoustic: {profile.likes_acoustic}\n")
+    is_valid, validation_message = validate_user_query(user_query)
 
-        # Print header for recommendations
-        print("🎵 TOP 5 RECOMMENDATIONS:\n")
+    if not is_valid:
+        logger.warning("Invalid user query: %s", validation_message)
+        print(f"\n{validation_message}")
+        return
 
-        # Print each recommendation with ranking
-        for rank, rec in enumerate(recommendations, start=1):
-            song, score, explanation = rec
-            
-            print(f"  #{rank}. {song['title']}")
-            print(f"      Artist:  {song['artist']}")
-            print(f"      Score:   {score:.2f} points")
-            print(f"      Reasons: {explanation}")
-            print()
+    user_prefs = query_to_user_prefs(user_query)
+    logger.info("Parsed user preferences: %s", user_prefs)
 
+    recommendations = recommend_songs(user_prefs, songs, k=5)
+    logger.info("Retrieved %d songs", len(recommendations))
+
+    rag_context = build_rag_context(user_query, recommendations)
+    logger.info("Built RAG context")
+
+    ai_response = generate_ai_recommendation(
+        user_query=user_query,
+        recommendations=recommendations,
+        rag_context=rag_context
+    )
+    logger.info("Generated AI recommendation response")
+
+    print("\n" + "=" * 70)
+    print("🤖 AI-GENERATED RECOMMENDATIONS")
+    print("=" * 70)
+    print(ai_response)
     print("=" * 70 + "\n")
 
 
 if __name__ == "__main__":
-    main()
+    run_rag_demo()
